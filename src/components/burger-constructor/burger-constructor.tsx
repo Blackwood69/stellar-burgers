@@ -15,10 +15,12 @@ import {
   getUser
 } from '../../services/slices/authSlice';
 import {
+  clearConstructor,
   getConstructorItems,
   selectOrderModalData,
   selectOrderRequest
 } from '../../services/slices/constructorSlice';
+import { clear } from 'node:console';
 
 export const BurgerConstructor: FC = () => {
   /** TODO: взять переменные constructorItems, orderRequest и orderModalData из стора */
@@ -35,7 +37,8 @@ export const BurgerConstructor: FC = () => {
   const constructorItems = useSelector(getConstructorItems);
   const user = useSelector(getUser);
 
-  const orderLoading = useSelector(selectOrderRequest);
+  const orderLoad = useSelector(selectOrderRequest);
+  const orderLoading = useSelector(selectLoading);
   const orderModal = useSelector(selectOrder);
   console.log('orderModal', orderModal);
 
@@ -53,7 +56,11 @@ export const BurgerConstructor: FC = () => {
       constructorItems.bun?._id
     ].filter(Boolean);
 
-    dispatch(createOrder(order));
+    dispatch(createOrder(order)).then((result) => {
+      if (createOrder.fulfilled.match(result)) {
+        dispatch(clearConstructor());
+      }
+    });
   };
 
   console.log(

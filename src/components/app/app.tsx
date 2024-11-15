@@ -13,22 +13,34 @@ import '../../index.css';
 import styles from './app.module.css';
 
 import { AppHeader, IngredientDetails, Modal, OrderInfo } from '@components';
-import { Route, Routes, useLocation, useNavigate } from 'react-router-dom';
+import {
+  Route,
+  Routes,
+  useLocation,
+  useMatch,
+  useNavigate
+} from 'react-router-dom';
 import path from 'path';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { AppDispatch, useDispatch } from '../../services/store';
 import { getIngridients } from '../../services/slices/getIngridientsSlice';
 import { ProtectedRoute } from '../protected-route/protected-route';
 import { checkUserAuth } from '../../services/slices/authSlice';
 import { getCookie } from '../../utils/cookie';
+import { deleteOrder } from '../../services/slices/orderSlice';
 
 const App = () => {
   const location = useLocation();
-  const background = location.state && location.state?.background;
+  const background =
+    (location.state as { background?: Location }) && location.state?.background;
   const dispatch = useDispatch();
   const nav = useNavigate();
 
+  const profileOrderNumb = useMatch('/profile/orders/:number')?.params.number;
+  const feedOrderNumb = useMatch('/feed/:number')?.params.number;
+  const orderNumber = feedOrderNumb || profileOrderNumb;
   const onClose = () => {
+    dispatch(deleteOrder());
     nav(-1);
   };
   useEffect(() => {
@@ -44,6 +56,11 @@ const App = () => {
     console.log('app Refresh Token:', refreshToken);
     dispatch(getIngridients());
   }, [dispatch]);
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const handleModalOpen = () => setIsModalOpen(true);
+  const handleModalClose = () => setIsModalOpen(false);
 
   return (
     <div className={styles.app}>
@@ -99,11 +116,32 @@ const App = () => {
             </ProtectedRoute>
           }
         />
-        <Route path='/ingredients/:id' element={<IngredientDetails />} />{' '}
+        <Route
+          path='/ingredients/:id'
+          element={
+            <div className={styles.detailPageWrap}>
+              <IngredientDetails />
+            </div>
+          }
+        />{' '}
         {/* Отдельный маршрут для деталей */}
-        <Route path='/feed/:number' element={<OrderInfo />} />{' '}
+        <Route
+          path='/feed/:number'
+          element={
+            <div className={styles.detailPageWrap}>
+              <OrderInfo />
+            </div>
+          }
+        />{' '}
         {/* Отдельный маршрут для OrderInfo */}
-        <Route path='/profile/orders/:number' element={<OrderInfo />} />{' '}
+        <Route
+          path='/profile/orders/:number'
+          element={
+            <div className={styles.detailPageWrap}>
+              <OrderInfo />
+            </div>
+          }
+        />{' '}
         {/* Отдельный маршрут для профиля заказов */}
         <Route path='*' element={<NotFound404 />} />
       </Routes>
@@ -112,7 +150,10 @@ const App = () => {
           <Route
             path='/feed/:number'
             element={
-              <Modal title='информация заказа' onClose={onClose}>
+              <Modal
+                title={`#${orderNumber && ('000000' + orderNumber).slice(-6)}`}
+                onClose={onClose}
+              >
                 <OrderInfo />
               </Modal>
             }
@@ -128,7 +169,10 @@ const App = () => {
           <Route
             path='/profile/orders/:number'
             element={
-              <Modal title='Информация о заказе' onClose={onClose}>
+              <Modal
+                title={`#${orderNumber && ('000000' + orderNumber).slice(-6)}`}
+                onClose={onClose}
+              >
                 <OrderInfo />
               </Modal>
             }
@@ -138,4 +182,5 @@ const App = () => {
     </div>
   );
 };
+
 export default App;
