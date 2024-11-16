@@ -3,7 +3,7 @@ import { burgerConstructorSlice } from '../constructorSlice';
 import { feedSlice } from '../mainPageSlice';
 import { orderSlice } from '../orderSlice';
 import { authSlice } from '../authSlice';
-import { expect } from "@jest/globals";
+import { expect } from '@jest/globals';
 
 describe('store tests', () => {
   it('root reducer test', () => {

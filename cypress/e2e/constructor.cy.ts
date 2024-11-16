@@ -39,6 +39,7 @@ describe('e2e', () => {
     cy.get('[data-test=ingredient-details]').should('not.exist');
     cy.get('[data-test=ingredient-643d69a5c3f7b9001cfa0943]').click();
     cy.get('[data-test=ingredient-details]').should('exist');
+    cy.get('[data-test=ingredient-643d69a5c3f7b9001cfa0943]').should('contain', 'Соус фирменный Space Sauce');
     cy.get('[data-test=modal] button[type=button]').click();
     cy.get('[data-test=ingredient-details]').should('not.exist');
   });

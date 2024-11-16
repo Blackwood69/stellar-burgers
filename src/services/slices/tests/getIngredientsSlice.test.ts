@@ -1,6 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { getIngridients, getIngridientsSlice } from '../getIngridientsSlice';
-import { expect } from "@jest/globals";
+import { expect } from '@jest/globals';
 
 type IngredientsState = ReturnType<typeof getIngridientsSlice.reducer>;
 describe('getIngredientsSlice reducers tests', () => {

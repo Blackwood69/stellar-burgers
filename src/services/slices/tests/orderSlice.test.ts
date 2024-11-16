@@ -1,7 +1,7 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { getOrderbyNumber, getOrders, orderSlice } from '../orderSlice';
 import { createOrder } from '../constructorSlice';
-import { expect } from "@jest/globals";
+import { expect } from '@jest/globals';
 
 type OrderState = ReturnType<typeof orderSlice.reducer>;
 describe('orderSlice reducers tests', () => {

@@ -6,7 +6,7 @@ import {
   initialState,
   upIngredient
 } from '../constructorSlice';
-import { expect } from "@jest/globals";
+import { expect } from '@jest/globals';
 
 describe('constructorSlice reducers tests', () => {
   const ingredientTest = {

@@ -1,6 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { feedSlice, getFeed } from '../mainPageSlice';
-import { expect } from "@jest/globals";
+import { expect } from '@jest/globals';
 
 type FeedState = ReturnType<typeof feedSlice.reducer>;
 describe('mainPageSlice reducers tests', () => {

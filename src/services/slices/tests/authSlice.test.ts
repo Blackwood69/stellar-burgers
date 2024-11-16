@@ -7,7 +7,7 @@ import {
   updateUserAuth,
   userRegistration
 } from '../authSlice';
-import { expect } from "@jest/globals";
+import { expect } from '@jest/globals';
 
 type AuthState = ReturnType<typeof authSlice.reducer>;
 
